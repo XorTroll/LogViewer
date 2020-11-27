@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30523.141
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogViewer", "LogViewer\LogViewer.csproj", "{CE3BA114-4A89-40EA-80BA-0B24174617E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryLog", "BinaryLog\BinaryLog.csproj", "{8F2BDAB8-E598-4B96-AF6F-8B4D840EB804}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CE3BA114-4A89-40EA-80BA-0B24174617E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE3BA114-4A89-40EA-80BA-0B24174617E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE3BA114-4A89-40EA-80BA-0B24174617E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE3BA114-4A89-40EA-80BA-0B24174617E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F2BDAB8-E598-4B96-AF6F-8B4D840EB804}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F2BDAB8-E598-4B96-AF6F-8B4D840EB804}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F2BDAB8-E598-4B96-AF6F-8B4D840EB804}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F2BDAB8-E598-4B96-AF6F-8B4D840EB804}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BED49505-F319-4A50-82D8-01A1D3D3F83B}
+	EndGlobalSection
+EndGlobal
