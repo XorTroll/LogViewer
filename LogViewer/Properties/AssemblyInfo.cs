@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Made by XorTroll")]
 [assembly: AssemblyProduct("LogViewer project")]
-[assembly: AssemblyCopyright("Copyright © LogViewer project, 2020")]
+[assembly: AssemblyCopyright("Copyright © LogViewer project")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

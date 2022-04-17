@@ -112,6 +112,7 @@ namespace LogViewer
                     if ((text_log.StartPosition <= pos) && (text_log.EndPosition >= pos))
                     {
                         var process_name = "";
+                        var module_name = "";
                         var thread_name = "";
                         var file_name = "";
                         uint line_number = 0;
@@ -119,7 +120,6 @@ namespace LogViewer
                         ulong timestamp = 0;
                         text_log.Packet.Chunks.ForEach(data_chunk =>
                         {
-                            
                             switch(data_chunk.Key)
                             {
                                 case LogDataChunkKey.FunctionName:
@@ -134,6 +134,9 @@ namespace LogViewer
                                 case LogDataChunkKey.ProcessName:
                                     process_name = data_chunk.ReadString();
                                     break;
+                                case LogDataChunkKey.ModuleName:
+                                    module_name = data_chunk.ReadString();
+                                    break;
                                 case LogDataChunkKey.ThreadName:
                                     thread_name = data_chunk.ReadString();
                                     break;
@@ -142,11 +145,34 @@ namespace LogViewer
                                     break;
                             }
                         });
-                        if (!string.IsNullOrEmpty(file_name) && (line_number >= 0)) log_packet_info.Location = file_name + $":{line_number}";
-                        if (string.IsNullOrWhiteSpace(process_name)) log_packet_info.ProcessName = $"Process ID 0x{text_log.Packet.Header.ProcessId:X}";
-                        else log_packet_info.ProcessName = process_name + $" (process ID 0x{text_log.Packet.Header.ProcessId:X})";
-                        if (string.IsNullOrWhiteSpace(thread_name)) log_packet_info.ThreadName = $"Thread ID 0x{text_log.Packet.Header.ThreadId:X}";
-                        else log_packet_info.ThreadName = thread_name + $" (thread ID 0x{text_log.Packet.Header.ThreadId:X})";
+
+                        if(!string.IsNullOrEmpty(file_name))
+                        {
+                            log_packet_info.Location = file_name;
+                        }
+                        if(line_number >= 0)
+                        {
+                            log_packet_info.Location += $":{line_number}";
+                        }
+
+                        var process_name_str = $"Process ID 0x{text_log.Packet.Header.ProcessId:X}";
+                        if(!string.IsNullOrWhiteSpace(process_name))
+                        {
+                            process_name_str = process_name + $" ({process_name_str})";
+                        }
+                        log_packet_info.ProcessName = process_name_str;
+
+                        var thread_name_str = $"Thread ID 0x{text_log.Packet.Header.ThreadId:X}";
+                        if(!string.IsNullOrWhiteSpace(thread_name))
+                        {
+                            thread_name_str = thread_name + $" ({thread_name_str})";
+                        }
+                        log_packet_info.ThreadName = thread_name_str;
+
+                        if(!string.IsNullOrEmpty(module_name))
+                        {
+                            log_packet_info.ModuleName = module_name;
+                        }
 
                         var date_time = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(timestamp);
                         log_packet_info.Timestamp = date_time.ToString("G");
@@ -162,8 +188,10 @@ namespace LogViewer
 
         private void AboutButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("This program is used to read Nintendo binary log files.\nProgram made by XorTroll", Text);
-            Process.Start("https://github.com/XorTroll");
+            if(MessageBox.Show("This program is used to read Nintendo binary log files.\nProgram made by XorTroll", Text) == DialogResult.OK)
+            {
+                Process.Start("https://github.com/XorTroll");
+            }
         }
 
         private void ListLogProcesses(BinLog bin_log)
@@ -190,12 +218,15 @@ namespace LogViewer
                     });
                     if (has_text_log)
                     {
-                        var process_str = $"Process ID 0x{log_packet.Header.ProcessId:X}";
-                        if (!string.IsNullOrEmpty(process_name)) process_str = process_name + $" ({process_str})";
-                        if (!ProcessComboBox.Items.Contains(process_str))
+                        var process_name_str = $"Process ID 0x{log_packet.Header.ProcessId:X}";
+                        if(!string.IsNullOrEmpty(process_name))
+                        {
+                            process_name_str = process_name + $" ({process_name_str})";
+                        }
+                        if (!ProcessComboBox.Items.Contains(process_name_str))
                         {
                             Processes.Add((log_packet.Header.ProcessId, process_name));
-                            ProcessComboBox.Items.Add(process_str);
+                            ProcessComboBox.Items.Add(process_name_str);
                         }
                     }
                 }
@@ -207,7 +238,7 @@ namespace LogViewer
             var ofd = new OpenFileDialog();
             ofd.Filter = "Nintendo/NX Binary Log (*.nxbinlog)|*.nxbinlog";
             ofd.Multiselect = false;
-            if (ofd.ShowDialog() == DialogResult.OK)
+            if(ofd.ShowDialog() == DialogResult.OK)
             {
                 SerialComboBox.Enabled = false;
                 DateComboBox.Enabled = false;
@@ -338,6 +369,9 @@ namespace LogViewer
     {
         [ReadOnly(true)]
         public string ProcessName { get; set; }
+
+        [ReadOnly(true)]
+        public string ModuleName { get; set; }
 
         [ReadOnly(true)]
         public string ThreadName { get; set; }
